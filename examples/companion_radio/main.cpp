@@ -2,6 +2,11 @@
 #include <Mesh.h>
 #include "MyMesh.h"
 
+#if defined(ESP32) && defined(TCP_CONSOLE_PORT) && defined(ADMIN_PASSWORD)
+  #include <helpers/esp32/TCPConsole.h>
+  TCPConsole tcp_console(nullptr);  // prefs set in setup()
+#endif
+
 // Believe it or not, this std C function is busted on some platforms!
 static uint32_t _atoi(const char* sp) {
   uint32_t n = 0;
@@ -110,6 +115,10 @@ void setup() {
 
   board.begin();
 
+  #if defined(ESP32) && defined(TCP_CONSOLE_PORT) && defined(ADMIN_PASSWORD)
+    tcp_console.begin();
+  #endif
+
 #ifdef DISPLAY_CLASS
   DisplayDriver* disp = NULL;
   if (display.begin()) {
@@ -217,6 +226,18 @@ void setup() {
   the_mesh.applyGpsPrefs();
 #endif
 
+#if defined(WAVESHARE_ESP32P4_ETH_SX1262) && defined(USE_ETHERNET)
+  {
+    NodePrefs* prefs = the_mesh.getNodePrefs();
+    if (prefs->eth_ip != 0)
+      board.reconfigureEthernet(prefs->eth_ip, prefs->eth_gateway, prefs->eth_subnet, prefs->eth_dns1);
+  }
+#endif
+
+  #if defined(ESP32) && defined(TCP_CONSOLE_PORT) && defined(ADMIN_PASSWORD)
+    tcp_console.setPrefs(the_mesh.getNodePrefs());
+  #endif
+
 #ifdef DISPLAY_CLASS
   ui_task.begin(disp, &sensors, the_mesh.getNodePrefs());  // still want to pass this in as dependency, as prefs might be moved
 #endif
@@ -229,4 +250,7 @@ void loop() {
   ui_task.loop();
 #endif
   rtc_clock.tick();
+#if defined(ESP32) && defined(TCP_CONSOLE_PORT) && defined(ADMIN_PASSWORD)
+  tcp_console.loop(the_mesh);
+#endif
 }

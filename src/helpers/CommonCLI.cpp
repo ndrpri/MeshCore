@@ -8,6 +8,23 @@
 #define BRIDGE_MAX_BAUD 115200
 #endif
 
+// Helper functions for IP address conversion.
+// Returns UINT32_MAX on parse error or out-of-range octet. Returns 0 for 0.0.0.0 (DHCP/clear).
+static uint32_t ipStringToUint32(const char* ip_str) {
+  unsigned int a = 0, b = 0, c = 0, d = 0;
+  if (sscanf(ip_str, "%u.%u.%u.%u", &a, &b, &c, &d) != 4) return UINT32_MAX;
+  if (a > 255 || b > 255 || c > 255 || d > 255) return UINT32_MAX;
+  return ((uint32_t)a << 24) | ((uint32_t)b << 16) | ((uint32_t)c << 8) | d;
+}
+
+static void uint32ToIPString(uint32_t ip, char* buffer, size_t size) {
+  uint8_t b1 = (ip >> 24) & 0xFF;
+  uint8_t b2 = (ip >> 16) & 0xFF;
+  uint8_t b3 = (ip >> 8) & 0xFF;
+  uint8_t b4 = ip & 0xFF;
+  snprintf(buffer, size, "%d.%d.%d.%d", b1, b2, b3, b4);
+}
+
 // Believe it or not, this std C function is busted on some platforms!
 static uint32_t _atoi(const char* sp) {
   uint32_t n = 0;
@@ -88,7 +105,12 @@ void CommonCLI::loadPrefsInt(FILESYSTEM* fs, const char* filename) {
     file.read((uint8_t *)&_prefs->adc_multiplier, sizeof(_prefs->adc_multiplier));                 // 166
     file.read((uint8_t *)_prefs->owner_info, sizeof(_prefs->owner_info));                          // 170
     file.read((uint8_t *)&_prefs->rx_boosted_gain, sizeof(_prefs->rx_boosted_gain));              // 290
-    // next: 291
+    file.read((uint8_t *)&_prefs->eth_ip, sizeof(_prefs->eth_ip));                               // 291
+    file.read((uint8_t *)&_prefs->eth_gateway, sizeof(_prefs->eth_gateway));                     // 295
+    file.read((uint8_t *)&_prefs->eth_subnet, sizeof(_prefs->eth_subnet));                       // 299
+    file.read((uint8_t *)&_prefs->eth_dns1, sizeof(_prefs->eth_dns1));                           // 303
+    file.read((uint8_t *)&_prefs->eth_dns2, sizeof(_prefs->eth_dns2));                           // 307
+    // next: 311
 
     // sanitise bad pref values
     _prefs->rx_delay_base = constrain(_prefs->rx_delay_base, 0, 20.0f);
@@ -178,8 +200,13 @@ void CommonCLI::savePrefs(FILESYSTEM* fs) {
     file.write((uint8_t *)&_prefs->discovery_mod_timestamp, sizeof(_prefs->discovery_mod_timestamp)); // 162
     file.write((uint8_t *)&_prefs->adc_multiplier, sizeof(_prefs->adc_multiplier));                 // 166
     file.write((uint8_t *)_prefs->owner_info, sizeof(_prefs->owner_info));                          // 170
-    file.write((uint8_t *)&_prefs->rx_boosted_gain, sizeof(_prefs->rx_boosted_gain));              // 290
-    // next: 291
+    file.write((uint8_t *)&_prefs->rx_boosted_gain, sizeof(_prefs->rx_boosted_gain));             // 290
+    file.write((uint8_t *)&_prefs->eth_ip, sizeof(_prefs->eth_ip));                              // 291
+    file.write((uint8_t *)&_prefs->eth_gateway, sizeof(_prefs->eth_gateway));                    // 295
+    file.write((uint8_t *)&_prefs->eth_subnet, sizeof(_prefs->eth_subnet));                      // 299
+    file.write((uint8_t *)&_prefs->eth_dns1, sizeof(_prefs->eth_dns1));                          // 303
+    file.write((uint8_t *)&_prefs->eth_dns2, sizeof(_prefs->eth_dns2));                          // 307
+    // next: 311
 
     file.close();
   }

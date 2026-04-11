@@ -66,7 +66,14 @@ public:
   virtual const char* getResetReasonString(uint32_t reason) { return "Not available"; }
   virtual uint8_t getShutdownReason() const { return 0; }
   virtual const char* getShutdownReasonString(uint8_t reason) { return "Not available"; }
+
+  // Ethernet runtime reconfiguration (boards with Ethernet override this)
+  virtual void reconfigureEthernet(uint32_t ip, uint32_t gw, uint32_t subnet, uint32_t dns1 = 0) { /* no op */ }
 };
+
+#if defined(WAVESHARE_ESP32P4_ETH_SX1262)
+  #include <helpers/esp32/ESP32P4EthBoard.h>
+#endif
 
 /**
  * An abstraction of the device's Realtime Clock.

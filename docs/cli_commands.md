@@ -1045,3 +1045,76 @@ region save
 **Note:** Returns an error on boards without power management support.
 
 ---
+
+## Waveshare ESP32-P4-ETH Board
+
+The Waveshare ESP32-P4-ETH uses an **ESP32-P4** SoC (dual-core RISC-V, 360 MHz, 32 MB PSRAM) with a native RMII Ethernet interface connected to an **IP101GRI** PHY. LoRa is provided by an **SX1262** module on GP-SPI3.
+
+### Key differences from LilyGo T-ETH-Elite
+
+| Feature     | T-ETH-Elite          | Waveshare ESP32-P4-ETH       |
+|-------------|----------------------|------------------------------|
+| SoC         | ESP32-S3 (Xtensa)    | ESP32-P4 (RISC-V)            |
+| Ethernet    | W5500 via SPI        | IP101GRI via native RMII EMAC|
+| ETHClass2   | Required             | Not used (native ETH stack)  |
+| LoRa SPI    | FSPI / custom        | GP-SPI3 (GPIO Matrix)        |
+
+### Ethernet CLI commands (available when `USE_ETHERNET` is enabled)
+
+These commands are available via the serial console or TCP console (when `TCP_CONSOLE_PORT` is defined).
+
+#### View or set the static IP address
+**Usage:**
+- `get ip`
+- `set ip <address>`
+
+**Parameters:**
+- `address`: IPv4 address (e.g. `192.168.1.100`), or `0.0.0.0` to use DHCP
+
+**Default:** `0.0.0.0` (DHCP)
+
+---
+
+#### View or set the subnet mask
+**Usage:**
+- `get subnet`
+- `set subnet <mask>`
+
+**Parameters:**
+- `mask`: subnet mask (e.g. `255.255.255.0`)
+
+---
+
+#### View or set the gateway
+**Usage:**
+- `get gw`
+- `set gw <address>`
+
+**Parameters:**
+- `address`: IPv4 gateway address
+
+---
+
+#### View or set the primary DNS server
+**Usage:**
+- `get dns`
+- `set dns <address>`
+
+**Parameters:**
+- `address`: IPv4 DNS server address (e.g. `8.8.8.8`)
+
+**Note:** All Ethernet settings are persisted and applied on next reboot. To revert to DHCP, set ip to `0.0.0.0`.
+
+---
+
+### TCP Console
+
+When `TCP_CONSOLE_PORT` is defined (e.g. `4242`), a TCP console is available via telnet or netcat:
+
+```
+nc <device-ip> 4242
+```
+
+Authentication uses the `ADMIN_PASSWORD` (NodePrefs `password` field, settable via `set password`). The console accepts the same CLI commands as the serial console. Up to `TCP_CONSOLE_MAX_CLIENTS` (default 2) simultaneous connections are supported. Idle connections are closed after `TCP_CONSOLE_TIMEOUT_MS` (default 5 minutes).
+
+---

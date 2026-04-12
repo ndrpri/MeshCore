@@ -46,6 +46,13 @@ static uint32_t _atoi(const char* sp) {
     #ifndef TCP_PORT
       #define TCP_PORT 5000
     #endif
+  #elif defined(USE_ETHERNET)
+    // Ethernet companion: WiFiServer works on ETH interface (same lwIP stack)
+    #include <helpers/esp32/SerialWifiInterface.h>
+    SerialWifiInterface serial_interface;
+    #ifndef TCP_PORT
+      #define TCP_PORT 5000
+    #endif
   #elif defined(BLE_PIN_CODE)
     #include <helpers/esp32/SerialBLEInterface.h>
     SerialBLEInterface serial_interface;
@@ -206,6 +213,10 @@ void setup() {
   board.setInhibitSleep(true);   // prevent sleep when WiFi is active
   WiFi.begin(WIFI_SSID, WIFI_PWD);
   serial_interface.begin(TCP_PORT);
+#elif defined(USE_ETHERNET)
+  // ETH is already up from board.begin(); just start the TCP server
+  serial_interface.begin(TCP_PORT);
+  Serial.printf("Companion radio listening on TCP port %d\n", TCP_PORT);
 #elif defined(BLE_PIN_CODE)
   serial_interface.begin(BLE_NAME_PREFIX, the_mesh.getNodePrefs()->node_name, the_mesh.getBLEPin());
 #elif defined(SERIAL_RX)

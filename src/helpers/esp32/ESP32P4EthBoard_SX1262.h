@@ -2,7 +2,7 @@
 
 #if defined(WAVESHARE_ESP32P4_ETH_SX1262)
 
-// LoRa SX1262 pins — connected on header P1 via GP-SPI3 (GPIO Matrix)
+// Waveshare LR20/30 (SX1262 + STM32 bridge) pins — connected on header P1 via GP-SPI3 (GPIO Matrix)
 #define P_LORA_MOSI    17
 #define P_LORA_MISO    16
 #define P_LORA_SCLK    18
@@ -14,7 +14,7 @@
 
 // Ethernet RMII pins (IP101GRI PHY, native ESP32-P4 EMAC)
 // PHY provides 50 MHz REFCLK on GPIO50 (clock input mode)
-#define ETH_PHY_ADDR   0    // AD0 and AD3 both grounded
+#define ETH_PHY_ADDR   1    // TODO: verify from schematic (PHYAD strapping on IP101GRI)
 #define ETH_MDC_GPIO   31
 #define ETH_MDIO_GPIO  52
 #define ETH_PHY_RST_GPIO 51

@@ -13,9 +13,9 @@ ESP32P4EthBoard board;
   MomentaryButton analog_btn(PIN_USER_BTN_ANA, 1000, true);
 #endif
 
-// SX1262 on GP-SPI3 — all pins routed through GPIO Matrix
-// TODO: For ESP32-P4 in arduino-esp32 3.x, verify the correct SPI host index for SPI3.
-//       If SPI3_HOST is not defined, try SPI2_HOST or use default SPIClass().
+// Waveshare LR20/30 module: SX1262 chip + STM32 bridge + external RF switch
+// RXEN/TXEN are controlled by the STM32 on the module, NOT wired to the MCU.
+// All SPI pins routed through GPIO Matrix (GP-SPI, default FSPI host).
 static SPIClass spi;
 
 RADIO_CLASS radio = new Module(P_LORA_NSS, P_LORA_DIO_1, P_LORA_RESET, P_LORA_BUSY, spi);

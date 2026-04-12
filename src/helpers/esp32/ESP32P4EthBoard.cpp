@@ -3,12 +3,11 @@
 #include <Arduino.h>
 #include <ETH.h>
 #include <WiFi.h>
-#include <esp_task_wdt.h>
 #include "ESP32P4EthBoard.h"
 
-// ETH_CLOCK_GPIO50_IN: clock input from IP101GRI PHY on GPIO50.
-// This constant is defined in arduino-esp32 3.x for ESP32-P4 EMAC.
-// TODO: verify exact enum name when arduino-esp32 ESP32-P4 target is stable.
+// EMAC_CLK_EXT_IN: IP101GRI PHY provides 50 MHz clock on GPIO50 (ETH_RMII_CLK).
+// ETH.begin() for ESP32-P4 uses clock_mode to set the direction; clock_gpio=50
+// comes from the ETH_RMII_CLK default in ETH.h.
 #ifndef ETH_CLOCK_GPIO50_IN
   #define ETH_CLOCK_GPIO50_IN EMAC_CLK_EXT_IN
 #endif
@@ -34,21 +33,23 @@ void ESP32P4EthBoard::startNetwork() {
 void ESP32P4EthBoard::startEthernet() {
   // Native RMII Ethernet via ESP32-P4 internal EMAC + IP101GRI PHY.
   // ETHClass2 is NOT used here. This calls the arduino-esp32 3.x ETH API directly.
-  ETH.begin(ETH_PHY_IP101, ETH_PHY_ADDR, ETH_MDC_GPIO, ETH_MDIO_GPIO,
-            ETH_PHY_RST_GPIO, ETH_CLOCK_GPIO50_IN);
+  bool ok = ETH.begin(ETH_PHY_IP101, ETH_PHY_ADDR, ETH_MDC_GPIO, ETH_MDIO_GPIO,
+                      ETH_PHY_RST_GPIO, ETH_CLOCK_GPIO50_IN);
+  if (!ok) {
+    Serial.println("ETH.begin() failed — check RMII pins and ETH_PHY_RST_GPIO");
+    return;
+  }
   delay(100);
 
   // Wait for Ethernet link
   unsigned long t0 = millis();
   while (!ETH.linkUp() && millis() - t0 < 5000) {
-    esp_task_wdt_reset();
     delay(100);
   }
 
   // Wait for DHCP IP assignment
   t0 = millis();
   while (ETH.localIP() == IPAddress(0, 0, 0, 0) && millis() - t0 < 5000) {
-    esp_task_wdt_reset();
     delay(100);
   }
 

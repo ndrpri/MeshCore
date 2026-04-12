@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include <ETH.h>
+#include <WiFi.h>
 #include <esp_task_wdt.h>
 #include "ESP32P4EthBoard.h"
 

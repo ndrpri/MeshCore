@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(kill 20577)",
+      "Bash(kill 20575)",
+      "Bash(grep -rn \"EnvironmentSensorManager\\\\|sensors/\\\\*\" /Users/piero/Documents/PlatformIO/Projects/MeshCore/variants/*/platformio.ini)",
+      "Bash(grep -rn \"companion_radio\\\\|helpers/esp32/\\\\*\" /Users/piero/Documents/PlatformIO/Projects/MeshCore/variants/*/platformio.ini)",
+      "Bash(xargs -I{} nm {})",
+      "Read(//Users/piero/.platformio/**)",
+      "Bash(stty -f /dev/cu.usbmodem5B61091522 115200)",
+      "Read(//dev/**)",
+      "Bash(ls /dev/cu.usbmodem*)",
+      "Bash(stty -f /dev/cu.usbmodem5B610915221 115200)",
+      "Bash(timeout 12 cat /dev/cu.usbmodem5B610915221)",
+      "Bash(xargs ls:*)",
+      "Bash(grep -rn \"WiFiServer\\\\|NetworkServer\\\\|ETHServer\\\\|WiFiClient\" src/helpers/esp32/SerialWifiInterface*)",
+      "Bash(grep -n \"SerialWifi\" platformio.ini src/helpers/esp32/ESP32Board*.h)",
+      "Bash(timeout 15 cat /dev/cu.usbmodem5B610915221)",
+      "Bash(grep -rn \"WiFi\\\\|UDP\\\\|udp\\\\|WiFiUDP\\\\|IPAddress\" src/helpers/bridges/BridgeBase* --include=\"*.cpp\" --include=\"*.h\")"
+    ]
+  }
+}

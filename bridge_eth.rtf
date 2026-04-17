@@ -1,0 +1,274 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Bold;\f1\fnil\fcharset0 HelveticaNeue;\f2\fmodern\fcharset0 Courier;
+\f3\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red178\green178\blue178;\red121\green121\blue121;\red29\green29\blue29;
+\red19\green20\blue21;\red15\green16\blue16;\red0\green0\blue0;\red31\green32\blue33;}
+{\*\expandedcolortbl;;\cssrgb\c74902\c74902\c74902;\cssrgb\c54902\c54902\c54902;\cssrgb\c14902\c14902\c14902;
+\cssrgb\c9804\c10196\c10588;\cssrgb\c7059\c7451\c7843;\cssrgb\c0\c0\c0;\cssrgb\c16471\c16863\c17255;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid301\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid401\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid5}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sa51\partightenfactor0
+
+\f0\b\fs26 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Sarebbe per\'f2 fattibile aggiungere un bridge UDP su Ethernet.
+\f1\b0  L'architettura sarebbe:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls1\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Nuova classe\'a0
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 UDPBridge
+\f1\fs26 \cf2 \cb1 \strokec2 \'a0che estende\'a0
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 BridgeBase
+\f1\fs26 \cf2 \cb1 \strokec2 \'a0(stesso pattern di\'a0
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 ESPNowBridge
+\f1\fs26 \cf2 \cb1 \strokec2 )\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Usa\'a0
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 WiFiUDP
+\f1\fs26 \cf2 \cb1 \strokec2 \'a0per inviare/ricevere pacchetti mesh (funziona su ETH tramite lo stesso stack lwIP \'97 come gi\'e0 visto con\'a0
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 WiFiServer
+\f1\fs26 \cf2 \cb1 \strokec2 )\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Per la scoperta dei peer:\'a0
+\f0\b UDP broadcast
+\f1\b0 \'a0verso l'indirizzo di broadcast della subnet (es.\'a0
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 192.168.254.255
+\f1\fs26 \cf2 \cb1 \strokec2 ) \uc0\u8594  nessun IP da specificare a mano, funziona automaticamente su tutta la LAN\
+\pard\pardeftab720\qc\partightenfactor0
+\cf2 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 Node A (ETH)  
+\f3 \uc0\u9472 \u9472 
+\f2 broadcast
+\f3 \uc0\u9472 \u9472 \u8594 
+\f2   Node B (ETH)\
+              
+\f3 \uc0\u8592 \u9472 \u9472 
+\f2 broadcast
+\f3 \uc0\u9472 \u9472 
+\f2   Node C (ETH)\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls2\ilvl0
+\f1\fs26 \cf2 \cb1 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Stessa logica di deduplicazione gi\'e0 presente in\'a0
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 BridgeBase
+\f1\fs26 \cf2 \cb1 \strokec2 \'a0per evitare loop\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Porta UDP configurabile via build flag o NodePrefs\
+\pard\pardeftab720\sa51\partightenfactor0
+\cf2 Vuoi che lo implementi? Sarebbe un'aggiunta pulita e autonoma rispetto al resto del codice.\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb5 ottimo! sarebbe complesso?\cb1 \
+\pard\pardeftab720\sa51\partightenfactor0
+\cf3 \strokec3 \
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls3\ilvl0\cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\ls3\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\pard\pardeftab720\sa51\partightenfactor0
+\cf3 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls4\ilvl0\cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\ls4\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	5	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\pard\pardeftab720\sa51\partightenfactor0
+\cf3 \
+\
+\pard\pardeftab720\sa51\partightenfactor0
+\cf2 \strokec2 No, non sarebbe complessa. Guardando 
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 ESPNowBridge
+\f1\fs26 \cf2 \cb1 \strokec2  come riferimento:\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 Bash\'a0
+\f1\b0 \cf3 \strokec3 Count lines of existing bridge files\cf2 \cb6 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs22\fsmilli11050 \cf3 \strokec3 IN\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb6 \strokec2 wc -l src/helpers/bridges/ESPNowBridge.h src/helpers/bridges/ESPNowBridge.cpp src/helpers/bridges/BridgeBase.h src/helpers/bridges/BridgeBase.cpp\cb1 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f1\fs26 \cf2 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs22\fsmilli11050 \cf3 \cb6 \strokec3 OUT\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb6 \strokec2      157 src/helpers/bridges/ESPNowBridge.h\
+     219 src/helpers/bridges/ESPNowBridge.cpp\
+     120 src/helpers/bridges/BridgeBase.h\
+      48 src/helpers/bridges/BridgeBase.cpp\
+     544 total\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs26 \cf2 Bash\'a0
+\f1\b0 \cf3 \strokec3 Check how bridges are wired into MyMesh repeater\cf2 \cb6 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs22\fsmilli11050 \cf3 \strokec3 IN\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb6 \strokec2 grep -n "WITH_ESPNOW\\|WITH_RS232\\|ESPNowBridge\\|RS232Bridge\\|AbstractBridge" examples/simple_repeater/MyMesh.h examples/simple_repeater/MyMesh.cpp | head -20\cb1 \
+\pard\pardeftab720\qc\partightenfactor0
+
+\f1\fs26 \cf2 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs22\fsmilli11050 \cf3 \cb6 \strokec3 OUT\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb6 \strokec2 examples/simple_repeater/MyMesh.h:16:#ifdef WITH_RS232_BRIDGE\
+examples/simple_repeater/MyMesh.h:17:#include "helpers/bridges/RS232Bridge.h"\
+examples/simple_repeater/MyMesh.h:21:#ifdef WITH_ESPNOW_BRIDGE\
+examples/simple_repeater/MyMesh.h:22:#include "helpers/bridges/ESPNowBridge.h"\
+examples/simple_repeater/MyMesh.h:39:extern AbstractBridge* bridge;\
+examples/simple_repeater/MyMesh.h:115:#if defined(WITH_RS232_BRIDGE)\
+examples/simple_repeater/MyMesh.h:116:  RS232Bridge bridge;\
+examples/simple_repeater/MyMesh.h:117:#elif defined(WITH_ESPNOW_BRIDGE)\
+examples/simple_repeater/MyMesh.h:118:  ESPNowBridge bridge;\
+examples/simple_repeater/MyMesh.cpp:200:#ifdef WITH_RS232_BRIDGE\
+examples/simple_repeater/MyMesh.cpp:202:#elif WITH_ESPNOW_BRIDGE\
+examples/simple_repeater/MyMesh.cpp:837:#if defined(WITH_RS232_BRIDGE)\
+examples/simple_repeater/MyMesh.cpp:838:      , bridge(&_prefs, WITH_RS232_BRIDGE, _mgr, &rtc)\
+examples/simple_repeater/MyMesh.cpp:840:#if defined(WITH_ESPNOW_BRIDGE)\cb1 \
+\pard\pardeftab720\sa51\partightenfactor0
+
+\f1\fs26 \cf3 \strokec3 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls5\ilvl0\cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \
+\pard\pardeftab720\sa51\partightenfactor0
+\cf3 \
+\pard\pardeftab720\sa51\partightenfactor0
+\cf2 \strokec2 La struttura \'e8 molto chiara. Ecco la stima realistica:\
+\pard\pardeftab720\sa51\partightenfactor0
+
+\f0\b \cf2 Cosa va scritto:
+\f1\b0 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf8 \trbrdrl\brdrs\brdrw20\brdrcf8 \trbrdrr\brdrs\brdrw20\brdrcf8 
+\clvertalc \clshdrawnil \clwWidth5075\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx2880
+\clvertalc \clshdrawnil \clwWidth4461\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx5760
+\clvertalc \clshdrawnil \clwWidth909\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\qc\partightenfactor0
+
+\f0\b\fs24 \cf2 \strokec7 File\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\qc\partightenfactor0
+\cf2 Lavoro\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\qc\partightenfactor0
+\cf2 Righe ~\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf8 \trbrdrr\brdrs\brdrw20\brdrcf8 
+\clvertalc \clshdrawnil \clwWidth5075\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx2880
+\clvertalc \clshdrawnil \clwWidth4461\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx5760
+\clvertalc \clshdrawnil \clwWidth909\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\b0\fs23\fsmilli11700 \cf3 \cb4 \strokec3 src/helpers/bridges/UDPBridge.h
+\f1\fs24 \cf0 \cb1 \strokec7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 Nuovo (adatta ESPNowBridge.h)\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 ~100\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf8 \trbrdrr\brdrs\brdrw20\brdrcf8 
+\clvertalc \clshdrawnil \clwWidth5075\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx2880
+\clvertalc \clshdrawnil \clwWidth4461\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx5760
+\clvertalc \clshdrawnil \clwWidth909\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 src/helpers/bridges/UDPBridge.cpp
+\f1\fs24 \cf0 \cb1 \strokec7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 Nuovo (adatta ESPNowBridge.cpp)\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 ~150\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf8 \trbrdrr\brdrs\brdrw20\brdrcf8 
+\clvertalc \clshdrawnil \clwWidth5075\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx2880
+\clvertalc \clshdrawnil \clwWidth4461\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx5760
+\clvertalc \clshdrawnil \clwWidth909\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 examples/simple_repeater/MyMesh.h
+\f1\fs24 \cf0 \cb1 \strokec7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 Aggiungi\'a0
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 #ifdef WITH_UDP_BRIDGE
+\f1\fs24 \cf0 \cb1 \strokec7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 ~5\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf8 \trbrdrr\brdrs\brdrw20\brdrcf8 
+\clvertalc \clshdrawnil \clwWidth5075\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx2880
+\clvertalc \clshdrawnil \clwWidth4461\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx5760
+\clvertalc \clshdrawnil \clwWidth909\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 examples/simple_repeater/MyMesh.cpp
+\f1\fs24 \cf0 \cb1 \strokec7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 2-3 blocchi condizionali\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 ~10\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf8 \trbrdrb\brdrs\brdrw20\brdrcf8 \trbrdrr\brdrs\brdrw20\brdrcf8 
+\clvertalc \clshdrawnil \clwWidth5075\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx2880
+\clvertalc \clshdrawnil \clwWidth4461\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx5760
+\clvertalc \clshdrawnil \clwWidth909\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf8 \clbrdrl\brdrs\brdrw20\brdrcf8 \clbrdrb\brdrs\brdrw20\brdrcf8 \clbrdrr\brdrs\brdrw20\brdrcf8 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 platformio.ini
+\f1\fs24 \cf2 \cb1 \strokec7 \'a0variant\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 -D WITH_UDP_BRIDGE
+\f1\fs24 \cf2 \cb1 \strokec7 \'a0al repeater_eth\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 ~2\cf0 \cell \lastrow\row
+\pard\pardeftab720\sa51\partightenfactor0
+
+\f0\b\fs26 \cf2 \strokec2 La logica \'e8 quasi identica a ESPNowBridge
+\f1\b0  \'97 stesso formato pacchetto, stessa deduplicazione da BridgeBase, solo il trasporto cambia:\
+\pard\pardeftab720\qc\partightenfactor0
+\cf2 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 ESPNow:  esp_now_send(broadcast_mac, buf, len)\
+UDP:     udp.beginPacket(broadcastIP, port)\
+         udp.write(buf, len)\
+         udp.endPacket()\
+\
+ESPNow receive: callback asincrono\
+UDP receive:    udp.parsePacket() nel loop()\
+\pard\pardeftab720\sa51\partightenfactor0
+\cf3 WiFiUDP
+\f1\fs26 \cf2 \cb1 \strokec2  funziona gi\'e0 su ETH (stesso stack lwIP) \'97 confermato dal fatto che 
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 WiFiServer
+\f1\fs26 \cf2 \cb1 \strokec2  funziona su porta 4242 e 5000.\
+L'indirizzo broadcast si calcola automaticamente da IP+subnet gi\'e0 noti (
+\f2\fs23\fsmilli11700 \cf3 \cb4 \strokec3 192.168.254.255
+\f1\fs26 \cf2 \cb1 \strokec2  nel tuo caso), quindi zero configurazione manuale.\
+Vuoi che lo faccia?\
+}

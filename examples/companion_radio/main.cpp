@@ -240,8 +240,18 @@ void setup() {
 #if defined(WAVESHARE_ESP32P4_ETH_SX1262) && defined(USE_ETHERNET)
   {
     NodePrefs* prefs = the_mesh.getNodePrefs();
-    if (prefs->eth_ip != 0)
+    if (prefs->eth_ip != 0) {
       board.reconfigureEthernet(prefs->eth_ip, prefs->eth_gateway, prefs->eth_subnet, prefs->eth_dns1);
+#ifdef ETH_STATIC_IP
+    } else {
+      // First boot: seed NodePrefs with build-flag static IP so it's visible/editable via CLI
+      prefs->eth_ip      = (uint32_t)IPAddress(ETH_STATIC_IP);
+      prefs->eth_gateway = (uint32_t)IPAddress(ETH_GATEWAY);
+      prefs->eth_subnet  = (uint32_t)IPAddress(ETH_SUBNET);
+      prefs->eth_dns1    = (uint32_t)IPAddress(ETH_DNS);
+      the_mesh.savePrefs();
+#endif
+    }
   }
 #endif
 

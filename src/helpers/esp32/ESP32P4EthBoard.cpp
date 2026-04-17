@@ -47,24 +47,23 @@ void ESP32P4EthBoard::startEthernet() {
     delay(100);
   }
 
-  // Wait for DHCP IP assignment
+#ifdef ETH_STATIC_IP
+  // Static IP defined in build flags — apply immediately, skip DHCP entirely.
+  // NodePrefs override (reconfigureEthernet) runs later if user changed IP via CLI.
+  ETH.config(IPAddress(ETH_STATIC_IP), IPAddress(ETH_GATEWAY),
+             IPAddress(ETH_SUBNET), IPAddress(ETH_DNS));
+#else
+  // No static IP configured — try DHCP.
   t0 = millis();
   while (ETH.localIP() == IPAddress(0, 0, 0, 0) && millis() - t0 < 5000) {
     delay(100);
   }
-
-  // Apply static IP if DHCP timed out
   if (ETH.localIP() == IPAddress(0, 0, 0, 0)) {
-#ifdef ETH_STATIC_IP
-    Serial.println("DHCP timeout, using static IP from build flags");
-    ETH.config(IPAddress(ETH_STATIC_IP), IPAddress(ETH_GATEWAY),
-               IPAddress(ETH_SUBNET), IPAddress(ETH_DNS));
-#else
     Serial.println("DHCP timeout, using fallback IP");
     ETH.config(IPAddress(192, 168, 4, 2), IPAddress(192, 168, 4, 1),
                IPAddress(255, 255, 255, 0));
-#endif
   }
+#endif
 
   eth_local_ip = ETH.localIP().toString();
 
